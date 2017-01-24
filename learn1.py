@@ -1,3 +1,7 @@
+'''
+拟合：y = 0.1 * x + 0.3
+'''
+
 import tensorflow as tf
 import numpy as np 
 
