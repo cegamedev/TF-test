@@ -1,3 +1,7 @@
+'''
+Variable的使用
+'''
+
 import tensorflow as tf
 
 state = tf.Variable(0,name='counter')
