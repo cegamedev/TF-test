@@ -1,3 +1,5 @@
+# coding=utf-8
+
 '''
 Session的应用
 '''
