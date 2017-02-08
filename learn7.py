@@ -20,7 +20,7 @@ def add_layer(inputs, in_size, out_size, activation_function=None):
             outputs = Wx_plus_b
         else:
             outputs = activation_function(Wx_plus_b)
-        return outputs
+    return outputs
 
 x_data = np.linspace(-1, 1, 300)[:, np.newaxis]  # newaxis增加一个维度，原来一维数组边二维数组
 noise = np.random.normal(0, 0.05, x_data.shape)
@@ -37,7 +37,7 @@ with tf.name_scope('loss'):
 with tf.name_scope('train'):
     train_step = tf.train.GradientDescentOptimizer(0.1).minimize(loss)
 
-init = tf.initialize_all_variables()
+init = tf.global_variables_initializer()
 sess = tf.Session()
 writer = tf.summary.FileWriter("logs/", sess.graph)
 sess.run(init)
