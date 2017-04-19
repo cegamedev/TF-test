@@ -3,7 +3,7 @@
 '''
 导出模型，提供serving使用
 建造神经网络，拟合一元二次方程
-Weights和biases矩阵，输入是行，输出是列，假设只有一个包含10个神经元的隐藏层，L0(0,1)->L1(1,10)->L2(10,1)
+Weights和biases矩阵，输入是行，输出是列，直观理解列代表该层神经元，假设只有一个包含10个神经元的隐藏层，L0(0,1)->L1(1,10)->L2(10,1)
 '''
 
 import os
@@ -61,7 +61,7 @@ for i in range(1000):
 raise SystemExit
 
 
-print 'Exporting trained model to', work_dir
+print ('Exporting trained model to', work_dir)
 builder = saved_model_builder.SavedModelBuilder(work_dir)
 
 # Build the signature_def_map.
@@ -86,4 +86,4 @@ builder.add_meta_graph_and_variables(
 
 builder.save()
 
-print 'Done exporting!'
+print ('Done exporting!')
