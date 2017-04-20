@@ -17,6 +17,7 @@ from tensorflow.python.saved_model import utils
 from tensorflow.examples.tutorials.mnist import input_data
 from PIL import Image
 import numpy as np
+import cv2
 
 work_dir = '/tmp/mnist_softmax/1'
 
@@ -75,23 +76,35 @@ sess.run(init)
 for i in range(1000):
     batch_xs, batch_ys = mnist.train.next_batch(100)
     sess.run(train_step, feed_dict={xs: batch_xs, ys: batch_ys})
-    if i % 1000 == 0:
-        compute_accuracy(
-            mnist.test.images, mnist.test.labels)
-        # print(compute_accuracy(
-        #     mnist.test.images, mnist.test.labels))
+    # if i % 1000 == 0:
+    # compute_accuracy(
+    # mnist.test.images, mnist.test.labels)
+    # print(compute_accuracy(
+    #     mnist.test.images, mnist.test.labels))
 
-    im = Image.open('test_f_20.tiff')
-    newImg = Image.new("RGB", (28, 28), (0, 0, 0)).convert('F')
-    newImg.paste(im, (4, 4))
-    newImg.save('test_f_28.tiff')
+# im = Image.open('test_f_20.tiff')
+# newImg = Image.new("RGB", (28, 28), (0, 0, 0)).convert('F')
+# newImg.paste(im, (4, 4))
+# newImg.save('test_f_28.tiff')
 
 # gray_im_arr = np.array(im).reshape(784) / 255.0
 # print(gray_im_arr)
 
+image = cv2.LoadImage('test.png', cv2.CV_LOAD_IMAGE_COLOR)  # Load the image
+# 8depth, 1 channel so grayscale
+grey = cv2.CreateImage((image.width, image.height), 8, 1)
+# Convert to gray so act as a filter
+cv2.CvtColor(image, grey, cv2.CV_RGBA2GRAY)
+# 平滑变换
+smoothed = cv2.CloneImage(image)
+# Apply a smooth alogrithm with the specified algorithm cv.MEDIAN
+cv2.Smooth(image, smoothed, cv2.CV_MEDIAN)
+cv2.SaveImage("test_cv.png", image)
+
+
 raise SystemExit
 
-print ('Exporting trained model to', work_dir)
+print('Exporting trained model to', work_dir)
 builder = saved_model_builder.SavedModelBuilder(work_dir)
 
 # Build the signature_def_map.
@@ -116,4 +129,4 @@ builder.add_meta_graph_and_variables(
 
 builder.save()
 
-print ('Done exporting!')
+print('Done exporting!')
