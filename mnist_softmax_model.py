@@ -90,16 +90,13 @@ for i in range(1000):
 # gray_im_arr = np.array(im).reshape(784) / 255.0
 # print(gray_im_arr)
 
-image = cv2.LoadImage('test.png', cv2.CV_LOAD_IMAGE_COLOR)  # Load the image
-# 8depth, 1 channel so grayscale
-grey = cv2.CreateImage((image.width, image.height), 8, 1)
-# Convert to gray so act as a filter
-cv2.CvtColor(image, grey, cv2.CV_RGBA2GRAY)
-# 平滑变换
-smoothed = cv2.CloneImage(image)
-# Apply a smooth alogrithm with the specified algorithm cv.MEDIAN
-cv2.Smooth(image, smoothed, cv2.CV_MEDIAN)
-cv2.SaveImage("test_cv.png", image)
+img = cv2.imread('test.png', 0)  # 直接读为灰度图像
+kernel_size = (5, 5)
+sigma = 1
+img = cv2.blur(img, (2, 2))
+# img = cv2.GaussianBlur(img, kernel_size, sigma)
+# ret, thresh1 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
+cv2.imwrite("test_cv.png", img)
 
 
 raise SystemExit
