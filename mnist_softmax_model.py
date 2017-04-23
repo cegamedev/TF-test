@@ -39,9 +39,10 @@ def add_layer(inputs, in_size, out_size, activation_function=None,):
 
 def compute_accuracy(v_xs, v_ys):
     # print(v_xs[0], v_ys[0])
-    # img_x = v_xs[0].reshape(28, 28)
-    # image2 = Image.fromarray(img_x)
-    # image2.save('test_m.tiff')
+    img_x = v_xs[4].reshape(28, 28) * 255
+    image2 = Image.fromarray(img_x).convert('L')
+    print(np.array(image2))
+    image2.save('test_m.png')
     global prediction
     y_pre = sess.run(prediction, feed_dict={xs: v_xs})
     m_y_pre = tf.argmax(y_pre, 1)
@@ -76,9 +77,8 @@ sess.run(init)
 for i in range(1000):
     batch_xs, batch_ys = mnist.train.next_batch(100)
     sess.run(train_step, feed_dict={xs: batch_xs, ys: batch_ys})
-    # if i % 1000 == 0:
-    # compute_accuracy(
-    # mnist.test.images, mnist.test.labels)
+    if i % 1000 == 0:
+        compute_accuracy(mnist.test.images, mnist.test.labels)
     # print(compute_accuracy(
     #     mnist.test.images, mnist.test.labels))
 
@@ -90,13 +90,10 @@ for i in range(1000):
 # gray_im_arr = np.array(im).reshape(784) / 255.0
 # print(gray_im_arr)
 
-img = cv2.imread('test.png', 0)  # 直接读为灰度图像
-kernel_size = (5, 5)
-sigma = 1
-img = cv2.blur(img, (2, 2))
-# img = cv2.GaussianBlur(img, kernel_size, sigma)
-# ret, thresh1 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
-cv2.imwrite("test_cv.png", img)
+# img_gray = cv2.imread('test.png', 0)
+# img_dist = cv2.adaptiveThreshold(
+#     img_gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 5, 5)
+# cv2.imwrite("test_cv.png", img_dist)
 
 
 raise SystemExit
