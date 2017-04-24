@@ -16,7 +16,7 @@ from tensorflow.python.saved_model import tag_constants
 from tensorflow.python.saved_model import utils
 from tensorflow.examples.tutorials.mnist import input_data
 
-work_dir = '/tmp/mnist_softmax/1'
+work_dir = '/tmp/mnist_softmax/2'
 
 # number 1 to 10 data
 mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
@@ -64,16 +64,16 @@ else:
     init = tf.global_variables_initializer()
 sess.run(init)
 
-for i in range(1000):
+for i in range(100000):
     batch_xs, batch_ys = mnist.train.next_batch(100)
     sess.run(train_step, feed_dict={xs: batch_xs, ys: batch_ys})
-    if i % 50 == 0:
+    if i % 1000 == 0:
         print(compute_accuracy(
             mnist.test.images, mnist.test.labels))
 
 # raise SystemExit
 
-print ('Exporting trained model to', work_dir)
+print('Exporting trained model to', work_dir)
 builder = saved_model_builder.SavedModelBuilder(work_dir)
 
 # Build the signature_def_map.
@@ -98,4 +98,4 @@ builder.add_meta_graph_and_variables(
 
 builder.save()
 
-print ('Done exporting!')
+print('Done exporting!')
