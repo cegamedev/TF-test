@@ -20,7 +20,7 @@ from tensorflow.python.saved_model import utils
 from tensorflow.python.util import compat
 
 
-work_dir = '/tmp/square_fun/1'
+work_dir = '/tmp/square_fun/2'
 
 
 def add_layer(inputs, in_size, out_size, activation_function=None):
@@ -33,7 +33,7 @@ def add_layer(inputs, in_size, out_size, activation_function=None):
         outputs = activation_function(Wx_plus_b)
     return outputs
 
-x_data = np.linspace(-1, 1, 3)[:, np.newaxis]  # newaxis增加一个维度，原来一维数组边二维数组
+x_data = np.linspace(-1, 1, 100000)[:, np.newaxis]  # newaxis增加一个维度，原来一维数组边二维数组
 noise = np.random.normal(0, 0.05, x_data.shape)
 y_data = np.square(x_data) - 0.5
 
@@ -50,15 +50,15 @@ init = tf.initialize_all_variables()
 sess = tf.Session()
 sess.run(init)
 
-for i in range(1000):
+for i in range(20000):
     sess.run(train_step, feed_dict={xs: x_data, ys: y_data})
-    if not (i % 1000):
+    if not (i % 100):
         print(sess.run(loss, feed_dict={xs: x_data, ys: y_data}))
-        print(sess.run(xs, feed_dict={xs: x_data, ys: y_data}))
-        print(sess.run(ys, feed_dict={xs: x_data, ys: y_data}))
-        print(sess.run(predition, feed_dict={xs: x_data, ys: y_data}))
+        # print(sess.run(xs, feed_dict={xs: x_data, ys: y_data}))
+        # print(sess.run(ys, feed_dict={xs: x_data, ys: y_data}))
+        # print(sess.run(predition, feed_dict={xs: x_data, ys: y_data}))
 
-raise SystemExit
+# raise SystemExit
 
 
 print ('Exporting trained model to', work_dir)
